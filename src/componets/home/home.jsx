@@ -20,7 +20,7 @@ import Spinner from "../element/spinner/spinner";
 class Home extends Component {
     state = {
         movies: [],
-        heroimage: null,
+        heroImage: null,
         isLoading: false,
         currentPage: 0,
         totalPages: 0,
@@ -37,7 +37,13 @@ class Home extends Component {
         fetch(endpoint)
             .then(result => result.json())
             .then(result => {
-                console.log(result);
+                this.setState({
+                    movies: [...this.state.movies, ...result.results],
+                    heroImage: this.state.heroImage || result.results[0],
+                    isLoading: false,
+                    currentPage: result.page,
+                    totalPages: result.total_pages
+                });
             });
     };
 
