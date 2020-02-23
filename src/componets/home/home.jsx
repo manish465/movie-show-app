@@ -38,12 +38,29 @@ class Home extends Component {
         this.setState({ isLoading: true });
 
         if (this.state.searchTerms === "") {
+            endpoint = `${API_URL}movie/popular?api_key=${API_KEY}&language=en-US&page=${this
+                .state.currentPage + 1}`;
+        } else {
+            endpoint = `${API_URL}search/movie/?api_key=${API_KEY}&language=en-US&query${
+                this.state.searchTerms
+            }&page=${this.state.currentPage + 1}`;
+        }
+        this.fetchItems(endpoint);
+    };
+
+    searchItems = searchTerms => {
+        let endpoint = "";
+        this.setState({
+            movies: [],
+            isLoading: true,
+            searchTerms
+        });
+
+        if (searchTerms === "") {
             endpoint = `${API_URL}movie/popular?api_key=${API_KEY}&language=en-Us&page=${this
                 .state.currentPage + 1}`;
         } else {
-            endpoint = `${API_URL}search/movie/?api_key=${API_KEY}&language=en-Us&query${
-                this.state.searchTerms
-            }&page=${this.state.currentPage + 1}`;
+            endpoint = `${API_URL}search/movie?api_key=${API_KEY}&language=en-US&query=${searchTerms}`;
         }
         this.fetchItems(endpoint);
     };
@@ -72,7 +89,7 @@ class Home extends Component {
                             title={this.state.heroImage.original_title}
                             text={this.state.heroImage.overview}
                         />
-                        <SeachBar />
+                        <SeachBar callback={this.searchItems} />
                     </div>
                 ) : null}
                 <FourColGrid />
