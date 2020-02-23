@@ -33,6 +33,21 @@ class Home extends Component {
         this.fetchItems(endpoint);
     }
 
+    LoadMoreItems = () => {
+        let endpoint = "";
+        this.setState({ isLoading: true });
+
+        if (this.state.searchTerms === "") {
+            endpoint = `${API_URL}movie/popular?api_key=${API_KEY}&language=en-Us&page=${this
+                .state.currentPage + 1}`;
+        } else {
+            endpoint = `${API_URL}search/movie/?api_key=${API_KEY}&language=en-Us&query${
+                this.state.searchTerms
+            }&page=${this.state.currentPage + 1}`;
+        }
+        this.fetchItems(endpoint);
+    };
+
     fetchItems = endpoint => {
         fetch(endpoint)
             .then(result => result.json())
