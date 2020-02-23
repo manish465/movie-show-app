@@ -54,7 +54,7 @@ class Home extends Component {
             .then(result => {
                 this.setState({
                     movies: [...this.state.movies, ...result.results],
-                    heroImage: this.state.heroImage || result.results[0],
+                    heroImage: this.state.heroImage || result.results[1],
                     isLoading: false,
                     currentPage: result.page,
                     totalPages: result.total_pages
@@ -65,8 +65,16 @@ class Home extends Component {
     render() {
         return (
             <div className="rmdb-home">
-                <Heroimage />
-                <SeachBar />
+                {this.state.heroImage ? (
+                    <div>
+                        <Heroimage
+                            image={`${IMAGE_BASE_URL}${BACKDROP_SIZE}${this.state.heroImage.backdrop_path}`}
+                            title={this.state.heroImage.original_title}
+                            text={this.state.heroImage.overview}
+                        />
+                        <SeachBar />
+                    </div>
+                ) : null}
                 <FourColGrid />
                 <Spinner />
                 <LoadMoreButton />
