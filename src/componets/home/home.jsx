@@ -7,7 +7,7 @@ import {
     IMAGE_BASE_URL,
     BACKDROP_SIZE,
     POSTER_SIZE,
-    API_URL
+    API_URL,
 } from "../../config";
 
 import Heroimage from "../element/heroimage/heroimage";
@@ -24,7 +24,7 @@ class Home extends Component {
         isLoading: false,
         currentPage: 0,
         totalPages: 0,
-        searchTerms: ""
+        searchTerms: "",
     };
 
     componentDidMount() {
@@ -53,7 +53,7 @@ class Home extends Component {
         this.setState({
             movies: [],
             isLoading: true,
-            searchTerms
+            searchTerms,
         });
 
         if (searchTerms === "") {
@@ -74,7 +74,7 @@ class Home extends Component {
                     heroImage: this.state.heroImage || result.results[1],
                     isLoading: false,
                     currentPage: result.page,
-                    totalPages: result.total_pages
+                    totalPages: result.total_pages,
                 });
             });
     };
@@ -92,7 +92,32 @@ class Home extends Component {
                         <SeachBar callback={this.searchItems} />
                     </div>
                 ) : null}
-                <FourColGrid />
+                <div className="rmdb-home-grid">
+                    <FourColGrid
+                        header={
+                            this.state.searchTerm
+                                ? "Search Result"
+                                : "Popular Movies"
+                        }
+                        loading={this.state.loading}
+                    >
+                        {this.state.movies.map((element, i) => {
+                            return (
+                                <MovieThumb
+                                    key={i}
+                                    clickable={true}
+                                    image={
+                                        element.poster_path
+                                            ? `${IMAGE_BASE_URL}${POSTER_SIZE}${element.poster_path}`
+                                            : "./images/no_image.jpg"
+                                    }
+                                    movieId={element.id}
+                                    movieName={element.original_title}
+                                />
+                            );
+                        })}
+                    </FourColGrid>
+                </div>
                 <Spinner />
                 <LoadMoreButton />
             </div>
